@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
+    <title>Tris</title>
+</head>
+
+<body>
+    <h1>TRIS</h1>
+    <p id="turn">Turno: O</p>
+    <div class="container">
+        <div><p>punti giocatore 1</p> <section>0</section> </div>
+        <table>
+            <tr>
+                <td data-num="1" onclick="onSelect(this)" id="box1" class="boxes"></td>
+                <td data-num="2" onclick="onSelect(this)" id="box2" class="boxes"></td>
+                <td data-num="3" onclick="onSelect(this)" id="box3" class="boxes"></td>
+            </tr>
+            <tr>
+                <td data-num="4" onclick="onSelect(this)" id="box4" class="boxes"></td>
+                <td data-num="5" onclick="onSelect(this)" id="box5" class="boxes"></td>
+                <td data-num="6" onclick="onSelect(this)" id="box6" class="boxes"></td>
+            </tr>
+            <tr>
+                <td data-num="7" onclick="onSelect(this)" id="box7" class="boxes"></td>
+                <td data-num="8" onclick="onSelect(this)" id="box8" class="boxes"></td>
+                <td data-num="9" onclick="onSelect(this)" id="box9" class="boxes"></td>
+            </tr>
+        </table>
+        <div><p>punti giocatore 2</p> <section>0</section> </div>
+    </div>
+        <button id="reset" onclick="onReset()">RESET</button>
+</body>
+</html>

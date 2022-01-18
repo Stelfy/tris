@@ -1,22 +1,41 @@
+/* In questo modo i colori possono essere salvati come variabili scrivendo var("nome-variabile") */
+:root {
+  --colore-sfondo: #fafad2;
+  --colore-bordo-tabella: #d2b48c;
+  --colore-sfondo-tabella: white;
+  --colore-sfondo-tabella-hover: lightyellow;
+}
+
+html {
+  font-size: 32px;
+}
+
 body {
-  background-color: #fafad2;
+  background-color: var(--colore-sfondo);
   text-align: center;
+}
+
+.container {
+  display: flex;
+  justify-content: space-around;
+  align-items: top;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: 4rem;
 }
 
 td,
 tr {
-  background-color: white;
+  background-color: var(--colore-sfondo-tabella);
+  width: 100px;
+  height: 100px;
   padding: 8px;
   border-radius: 6px;
 }
 
 table {
-  margin: 0 auto;
-  width: 50%;
-  height: 50%;
-  min-width: 550px;
-  background-color: #d2b48c;
-  float: middle;
+  background-color: var(--colore-bordo-tabella);
 }
 
 .uno {
@@ -32,10 +51,11 @@ table {
 }
 
 .boxes:hover {
-  background-color: lightyellow;
+  background-color: var(--colore-sfondo-tabella-hover);
 }
 
 #reset {
+  margin-top: 4rem;
   border: 2px solid #880000;
   background-color: #a00000;
   border-radius: 10px;
