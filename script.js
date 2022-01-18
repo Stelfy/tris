@@ -248,6 +248,7 @@ function onModeChangeAI(obj) {
     if (turn == 2) playAI();
 }
 
+// animazioni per bottoni
 function click(obj) {
     obj.style.transform = "translate(5px, 10px)" 
     obj.style.boxShadow = "none"
