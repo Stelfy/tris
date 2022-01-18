@@ -1,0 +1,18 @@
+body {
+  background-color: #fafad2;
+}
+
+table {
+  background-color: #d2b48c;
+}
+td,
+tr {
+  background-color: white;
+  padding: 8px;
+  border-radius: 6px;
+}
+
+table {
+  width: 100%;
+  min-width: 550px;
+}

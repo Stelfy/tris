@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./script.js"></script>
+    <title>Tris</title>
+</head>
+
+<body>
+    <h1>TRIS</h1>
+    <button>giocatore1:X</button>
+    <button>giocatore2:O</button>
+    <p id="turn"></p>
+    <table>
+        <tr>
+            <td data-num="1" onclick="onSelect(this)" id="box1"></td>
+            <td data-num="2" onclick="onSelect(this)" id="box2"></td>
+            <td data-num="3" onclick="onSelect(this)" id="box3"></td>
+        </tr>
+         <tr>
+            <td data-num="4" onclick="onSelect(this)" id="box4"></td>
+            <td data-num="5" onclick="onSelect(this)" id="box5"></td>
+            <td data-num="6" onclick="onSelect(this)" id="box6"></td>
+        </tr>
+         <tr>
+            <td data-num="7" onclick="onSelect(this)" id="box7"></td>
+            <td data-num="8" onclick="onSelect(this)" id="box8"></td>
+            <td data-num="9" onclick="onSelect(this)" id="box9"></td>
+        </tr>
+        </table>
+        <button id="reset" onclick="onReset()">RESET</button>
+</body>
+</html>
