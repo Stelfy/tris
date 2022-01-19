@@ -1,9 +1,12 @@
-var grid = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-var turn = 1;
-var finished = false;
-var ai = false;
-var turnCount = 1;
+let grid = [0, 0, 0, 0, 0, 0, 0, 0, 0];  // rappresentazione in un array della griglia
+let turn = 1;  // indica di chi e' il turno
+let finished = false;  // indica se il gioco e' terminato
+let ai = 'hard';  // indica se l'ai e' attivo o se si e' in 1vs1
+let turnCount = 1;  // conteggio dei turni
+let puntiX = 0;  // punti dei giocatori x e o
+let puntiO = 0;
 
+// tutte le combinazioni vincenti
 const winningPatterns = [
     [0, 1, 2],
     [3, 4, 5],
@@ -15,6 +18,7 @@ const winningPatterns = [
     [2, 4, 6]
 ]
 
+// controllo se il gioco e' vinto
 function isWon(gameGrid) {
     for (let i = 0; i < winningPatterns.length; i++){
         const arr = winningPatterns[i];
@@ -23,6 +27,7 @@ function isWon(gameGrid) {
     return false;
 }
 
+// controllo se il gioco e' pareggiato
 function isDraw(gameGrid) {
     for (let i = 0; i < gameGrid.length; i++){
         if (gameGrid[i]===0) return false;
@@ -30,7 +35,15 @@ function isDraw(gameGrid) {
     return true;
 }
 
+// aumenta e aggiorna i punti
+function onWin() {
+    (turn === 1) ? puntiO++ : puntiX++;  
+    document.getElementById('punti1').innerHTML = puntiO;
+    document.getElementById('punti2').innerHTML = puntiX;
+    finished = true;
+}
 
+// inserisce il simbolo giusto nella casella selezionata 
 function onSelect(obj) {
     const num = Number(obj.dataset.num);
     const turnDiv = document.getElementById("turn");
@@ -38,12 +51,10 @@ function onSelect(obj) {
     if (grid[num-1] != 0 || finished) return;
 
     if (turn === 1) {
-        turn = 2;
         obj.innerHTML = "O";
         turnDiv.innerHTML = "Turno: X"; 
     }
     else {
-        turn = 1;
         obj.innerHTML = "X";
         turnDiv.innerHTML = "Turno: O";
     }
@@ -51,21 +62,23 @@ function onSelect(obj) {
     grid[num-1] = obj.innerHTML;
 
     if (isWon(grid)) {
-        // show winner and stop game
+        // mostra vincitore, termina partita e aggiorna i punti
         turnDiv.innerHTML = "Vincitore: " + obj.innerHTML;
-        finished = true;
+        onWin();
     }
     else if (isDraw(grid)) {
-        // draw
+        // termina partita per pareggio
         turnDiv.innerHTML = "Pareggio";
         finished = true;
     }
 
+    (turn === 1) ? turn = 2 : turn = 1;  // aggiorna il turno
     turnCount++;
 
     if (ai && !finished) playAI();
 }
 
+// gioca la mossa stabilita dall' algoritmo
 function playAI() {
     const turnDiv = document.getElementById("turn");
     if (turnCount === 1){
@@ -75,18 +88,26 @@ function playAI() {
     }
     else {
         console.time('AI execution time')
-        const bestMove = findBestMoveHard(grid);
+
+        var bestMove = 10;
+        if (ai === 'hard'){
+            bestMove = findBestMoveHard(grid);
+        } else if (ai === 'normal') {
+            bestMove = findBestMoveMedium(grid);
+        } else if (ai === 'easy') {
+            bestMove = findBestMoveEasy(grid);
+        }
+
         console.timeEnd('AI execution time')
 
         document.getElementById("box"+(bestMove+1)).innerHTML = "X";
         grid[bestMove] = "X";
     }
 
-    turn = 1;
     if (isWon(grid)) {
         // show winner and stop game
-        turnDiv.innerHTML = "Vincitore: " + "Computer";
-        finished = true;
+        turnDiv.innerHTML = "Vincitore: Computer";
+        onWin();
     }
     else if (isDraw(grid)) {
         // draw
@@ -97,12 +118,15 @@ function playAI() {
         // continue playing
         turnDiv.innerHTML = "Turno: O";
     }
+    turn = 1;
     turnCount++;
 }
 
 
-// ALL ALGORITHM DIFFICULTIES
+// TUTTE LE DIFFICOLTA DEGLI ALGORITMI
 
+// trova la mossa con punteggio piu alto con funzione helper 
+// time: < O(n!)
 const memo = new Map();
 function findBestMoveHard(arr) {
     let move = 10;
@@ -124,7 +148,8 @@ function findBestMoveHard(arr) {
     return move;
 }
 
-
+// implementazione ricorsiva di un algoritmo "minmax" con memoizazione
+// restituisce 2 per vittoria, 1 per pareggio e 0 per sconfitta
 function helper(arr, turn) {
     if (isWon(arr)) return (turn % 2 != 0) ? 2 : 0;
     if (isDraw(arr)) return 1;
@@ -160,6 +185,8 @@ function helper(arr, turn) {
     return bestScore;
 }
 
+// implementazione a due livelli dell'algoritmo ricorsivo, controlla sia se puo vincere X sia se puo vincere O al prossimo turno
+// time: O(n*n*n*n) con n uguale al numero di caselle
 function findBestMoveMedium(arr) {
     var possibleMove = 10;
     for (let i = 0; i < 9; i++){
@@ -194,6 +221,8 @@ function findBestMoveMedium(arr) {
     return 10;
 }
 
+// algoritmo che guarda solo se la mossa successiva e una vittoria per x o un  pareggio
+// time: O(n*n) con n uguale al numero di caselle
 function findBestMoveEasy(arr) {
     for (let i = 0; i < 9; i++){
         if (arr[i] != 0) continue;
@@ -203,6 +232,7 @@ function findBestMoveEasy(arr) {
         if (isWon(newArr) || isDraw(newArr)) return i;
     }
 
+    //scelta casuale fra il resto delle mosse se non ci sono vittorie o pareggi
     var randomArr = []; 
     for (let i = 0; i < 9; i++){
         if (arr[i] == 0){
@@ -213,14 +243,23 @@ function findBestMoveEasy(arr) {
     return randomArr[Math.floor(Math.random()*randomArr.length)];
 }
 
-function onReset() {
+// resetta la griglia
+function onClear() {
     turnCount = 1;
     finished = false;
     grid = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-    for (let i = 1; i < 10; i++){
-        document.getElementById("box"+i).innerHTML = "";
-    }
+    update();
+    if (turn === 2 && ai) playAI();
+}
 
+function onReset() {
+    puntiO = 0;
+    puntiX = 0; 
+    onClear();
+}
+
+// aggiorna griglia e turno
+function update() {
     const turnDiv = document.getElementById("turn");
 
     if (turn === 1) {
@@ -228,18 +267,26 @@ function onReset() {
     }
     else {
         turnDiv.innerHTML = "Turno: X";
-        if (ai) playAI();
     }
-    
+
+    for (let i = 0; i < 9; i++){
+        const box = document.getElementById("box"+(i+1));
+        if (grid[i] == 0) box.innerHTML = "";
+        else if (grid[i] == "O") box.innerHTML = "O";
+        else box.innerHTML = "X";
+    }
+
+    document.getElementById('punti1').innerHTML = puntiO;
+    document.getElementById('punti2').innerHTML = puntiX;
 }
 
+// per cambiare la modalita di gioco da 1vs1 a pc e viceversa
 function onModeChange1v1(obj) {
     if (!ai) return;
     ai = false;
     click(obj);
     unclick(document.getElementById("ai"));
 }
-
 function onModeChangeAI(obj) {
     if (ai) return;
     ai = true;
@@ -253,7 +300,6 @@ function click(obj) {
     obj.style.transform = "translate(5px, 10px)" 
     obj.style.boxShadow = "none"
 }
-
 function unclick(obj) {
     obj.style.transform = "none" 
     obj.style.boxShadow = "5px 10px black"

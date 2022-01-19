@@ -10,7 +10,7 @@
     <h1>TRIS</h1>
     <p id="turn">Turno: O</p>
     <div class="container">
-        <div><p>punti giocatore 1</p> <section>0</section> </div>
+        <div><p>punti giocatore 1</p> <section id="punti1">0</section> </div>
         <table>
             <tr>
                 <td data-num="1" onclick="onSelect(this)" id="box1" class="boxes"></td>
@@ -28,8 +28,11 @@
                 <td data-num="9" onclick="onSelect(this)" id="box9" class="boxes"></td>
             </tr>
         </table>
-        <div><p>punti giocatore 2</p> <section>0</section> </div>
+        <div><p>punti giocatore 2</p> <section id="punti2">0</section> </div>
     </div>
+    <div class="bottoni-reset">
         <button id="reset" onclick="onReset()">RESET</button>
+        <button id="clear" onclick="onClear()">CLEAR</button>
+    </div>
 </body>
 </html>
