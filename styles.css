@@ -12,7 +12,6 @@ body {
 }
 
 .container {
- 
   display: flex;
   justify-content: space-around;
   align-items: top;
@@ -29,25 +28,11 @@ tr {
   height: 100px;
   padding: 8px;
   border-radius: 6px;
-   border: solid 10px #783c00;
- 
+  border: solid 10px #783c00;
 }
 
 table {
- 
   background-color: var(--colore-bordo-tabella);
-}
-
-.uno {
-  border-radius: 10px;
-  border: 3px solid red;
-  padding: 10px;
-}
-
-.due {
-  border-radius: 10px;
-  border: 3px solid blue;
-  padding: 10px;
 }
 
 .boxes:hover {
@@ -60,9 +45,9 @@ table {
   background-color: #a00000;
   border-radius: 10px;
 }
-#g1{
+#g1 {
   color: red;
 }
-#g2{
+#g2 {
   color: blue;
 }
