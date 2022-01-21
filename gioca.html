@@ -4,17 +4,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script src="./script.js"></script>
     <title>Tris</title>
 </head>
 <body>
-    <div class="wrapper-bottoni-gioco">
-        <button class="bottoni-gioco">1vs1</button>
-        <button class="bottoni-gioco">PC</button>
+    <div class="titolo-e-back">
+        <h3 class="bottone-back"><a href="./index.html">BACK</a></h3>
+    <h1 class="titolo">TRIS</h1>
     </div>
-    <div class="wrapper-bottoni-difficolta" style="visibility: hidden">
-        <button class="bottoni-difficolta">Facile</button>
-        <button class="bottoni-difficolta">Normale</button>
-        <button class="bottoni-difficolta">Difficile</button>
+    <div class="wrapper-bottoni-gioco" id="wrapper-bottoni-gioco">
+        <button class="bottoni-gioco" id="vs" value="" onclick="onDiffChoice(this)">1 vs 1</button>
+        <button class="bottoni-gioco" id="pc" onclick="onPcClick()">PC</button>
+    </div>
+    <div class="wrapper-bottoni-difficolta" id="wrapper-bottoni-difficolta" style="visibility: hidden">
+        <button class="bottoni-difficolta" value="easy" onclick="onDiffChoice(this)">Facile</button>
+        <button class="bottoni-difficolta" value="normal" onclick="onDiffChoice(this)">Normale</button>
+        <button class="bottoni-difficolta" value="hard" onclick="onDiffChoice(this)">Difficile</button>
     </div>
 </body>
 </html>

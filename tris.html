@@ -7,10 +7,10 @@
     <title>Tris</title>
 </head>
 <body>
-    <h1>TRIS</h1>
+    <h1 id="titolo-tris"><span class="lettera">T</span><span class="lettera">R</span><span class="lettera">I</span><span class="lettera">S</span></h1>
     <p id="turn">Turno: O</p>
     <div class="container">
-        <div><p>punti giocatore 1</p> <section id="punti1">0</section> </div>
+        <div id="g1"><p>Giocatore 1</p> <section id="punti1">0</section> </div>
         <table>
             <tr>
                 <td data-num="1" onclick="onSelect(this)" id="box1" class="boxes"></td>
@@ -28,11 +28,11 @@
                 <td data-num="9" onclick="onSelect(this)" id="box9" class="boxes"></td>
             </tr>
         </table>
-        <div><p>punti giocatore 2</p> <section id="punti2">0</section> </div>
+        <div id="g2"><p>Giocatore 2</p> <section id="punti2">0</section> </div>
     </div>
     <div class="bottoni-reset">
-        <button id="reset" onclick="onReset()">RESET</button>
-        <button id="clear" onclick="onClear()">CLEAR</button>
+        <button id="reset" onclick="onReset()"><div id="reset-img">X</div></button>
+        <button id="clear" onclick="onClear()"><img id="clear-img" src="./reset.png" width="40px" height="40px" alt="reset"></button>
     </div>
 </body>
 </html>

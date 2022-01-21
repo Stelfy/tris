@@ -1,0 +1,5 @@
+parti css:
+-animazione
+-bottone
+-root
+-select dei colori

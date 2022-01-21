@@ -1,10 +1,12 @@
 let grid = [0, 0, 0, 0, 0, 0, 0, 0, 0];  // rappresentazione in un array della griglia
 let turn = 1;  // indica di chi e' il turno
 let finished = false;  // indica se il gioco e' terminato
-let ai = 'hard';  // indica se l'ai e' attivo o se si e' in 1vs1
+let ai = false;  // indica se l'ai e' attivo o se si e' in 1vs1
 let turnCount = 1;  // conteggio dei turni
 let puntiX = 0;  // punti dei giocatori x e o
 let puntiO = 0;
+let coloreUno = '001219';  //colori dei giocatori uno e due
+let coloreDue = '9b2226';
 
 // tutte le combinazioni vincenti
 const winningPatterns = [
@@ -18,11 +20,26 @@ const winningPatterns = [
     [2, 4, 6]
 ]
 
+window.onload = function() {
+    loadVars();
+};
+
+function loadVars() {
+    if (localStorage.getItem('ai'))
+        ai = localStorage.getItem('ai');
+    if (localStorage.getItem('coloreUno'))
+        coloreUno = localStorage.getItem('coloreUno');
+    if (localStorage.getItem('coloreDue'))
+        coloreDue = localStorage.getItem('coloreDue');
+}
+
 // controllo se il gioco e' vinto
 function isWon(gameGrid) {
     for (let i = 0; i < winningPatterns.length; i++){
         const arr = winningPatterns[i];
-        if (gameGrid[arr[0]] != 0 && gameGrid[arr[0]] == gameGrid[arr[1]] && gameGrid[arr[1]] == gameGrid [arr[2]]) return true;
+        if (gameGrid[arr[0]] != 0 && gameGrid[arr[0]] == gameGrid[arr[1]] && gameGrid[arr[1]] == gameGrid [arr[2]]){
+            return true;
+        } 
     }
     return false;
 }
@@ -51,10 +68,12 @@ function onSelect(obj) {
     if (grid[num-1] != 0 || finished) return;
 
     if (turn === 1) {
+        obj.style.color = `#${coloreUno}`;
         obj.innerHTML = "O";
         turnDiv.innerHTML = "Turno: X"; 
     }
     else {
+        obj.style.color = `#${coloreDue}`;
         obj.innerHTML = "X";
         turnDiv.innerHTML = "Turno: O";
     }
@@ -83,7 +102,9 @@ function playAI() {
     const turnDiv = document.getElementById("turn");
     if (turnCount === 1){
         // place in center
-        document.getElementById("box5").innerHTML = "X";
+        const box = document.getElementById("box5");
+        box.innerHTML = "X";
+        box.style.color = `#${coloreDue}`
         grid[4] = "X";
     }
     else {
@@ -100,7 +121,9 @@ function playAI() {
 
         console.timeEnd('AI execution time')
 
-        document.getElementById("box"+(bestMove+1)).innerHTML = "X";
+        const box = document.getElementById("box"+(bestMove+1));
+        box.innerHTML = "X";
+        box.style.color = `#${coloreDue}`
         grid[bestMove] = "X";
     }
 
@@ -274,6 +297,7 @@ function update() {
         if (grid[i] == 0) box.innerHTML = "";
         else if (grid[i] == "O") box.innerHTML = "O";
         else box.innerHTML = "X";
+        box.classList.remove('vinto');
     }
 
     document.getElementById('punti1').innerHTML = puntiO;
@@ -284,26 +308,23 @@ function update() {
 function onModeChange1v1(obj) {
     if (!ai) return;
     ai = false;
-    click(obj);
-    unclick(document.getElementById("ai"));
 }
 function onModeChangeAI(obj) {
     if (ai) return;
     ai = true;
-    click(obj);
-    unclick(document.getElementById("1v1"))
     if (turn == 2) playAI();
 }
 
-// animazioni per bottoni
-function click(obj) {
-    obj.style.transform = "translate(5px, 10px)" 
-    obj.style.boxShadow = "none"
-}
-function unclick(obj) {
-    obj.style.transform = "none" 
-    obj.style.boxShadow = "5px 10px black"
+
+// PAGINA GIOCO
+
+function onPcClick() {
+    document.getElementById('wrapper-bottoni-gioco').style.visibility = "hidden";
+    document.getElementById('wrapper-bottoni-difficolta').style.visibility = "visible";
 }
 
-
+function onDiffChoice(obj) {
+    localStorage.setItem('ai', obj.value);
+    window.location.href = "./tris.html";
+}
 
