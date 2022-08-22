@@ -3,21 +3,39 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="./tabella-tris.svg" />
+    <script src="./script.js"></script>
     <title>Tris</title>
     </head>
 
     <body>
-        <div class="wrapper-armadietto-left">
-            <h2>giocatore 1</h2>
-            <label for="forma">Forma</label><select name="forma"><option value="1">X</option><option value="2">O</option></select>
-            <label for="colore">Colore</label><select name="colore"><option value="1"><div id="colore-rosso"></div></option><option value="2"><div id="colore-arancione"></div></option><option value="3"><div id="colore-giallo"></div></option></select>
+        <div class="titolo-e-back">
+            <a href="./index.html" id="bottone-back"><img src="./left-arrow.png" alt="back-arrow" width="70px"></a>
+            <h1 class="titolo" id="titolo-armadietto" data-en="Wardrobe" data-it="Armadietto" >Armadietto</h1>
+            <button id="bottone-musica" onclick="onToggleMusic()"><img src="./speaker.png" alt="music-button" width="60px" height="60px"></button>
         </div>
+        <div class="contenitore-armadietto">
+            <div class="cont-armadietto-sin">
+                <h2 id="armadietto-titolo-uno" data-en="Player 1" data-it="Giocatore 1">Giocatore 1</h2> 
+                <div class="label-input">
+                    <label for="forma" data-en="Form" data-it="Forma">Forma</label><select name="forma" class="button-forma" id="input-forma-uno"><option value="O">O</option><option value="&">&</option><option value="@">@</option><option value="§">§</option></select>
+                </div>
+                <div class="label-input">
+                    <label for="colore" data-en="Colour" data-it="Colore" >Colore</label><input class="button-forma" id="input-colore-uno" type="color" value="#001219">
+                </div>
+            </div>
 
-        <div class="wrapper-armadietto-right">
-            <h2>giocatore 2</h2>
-            <label for="forma">Forma</label><select name="forma"><option value="1">X</option><option value="2">O</option></select>
-            <label for="colore">Colore</label><select name="colore"><option value="1"><div id="colore-blu"></div></option><option value="2"><div id="colore-viola"></div></option><option value="3"><div id="colore-verde"></div></option></select>
+            <div class="cont-armadietto-des">
+                <h2 id="armadietto-titolo-due" data-en="Player 2" data-it="Giocatore 2">Giocatore 2</h2>
+                <div class="label-input">
+                    <label for="forma" data-en="Form" data-it="Forma">Forma</label><select name="forma"class="button-forma" id="input-forma-due"><option value="X">X</option><option value="+">+</option><option value="$">$</option><option value="#">#</option></select>
+                </div>
+                <div class="label-input">
+                    <label for="colore" data-en="Colour" data-it="Colore">Colore</label><input class="button-forma" id="input-colore-due" type="color" value="#9b2226">
+                </div>             
+            </div>
         </div>
     </body>
+
 </html>

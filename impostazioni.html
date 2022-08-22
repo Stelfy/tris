@@ -3,22 +3,27 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" href="./tabella-tris.svg" />
+    <link rel="stylesheet" href="styles.css">
+    <script src="./script.js"></script>
     <title>Tris</title>
     </head>
 
     <body>
-        <div>
-            <h2>Seleziona lingua</h2>
-            <label for="lingua">Forma</label><select name="lingua"><option value="1">italiano</option><option value="2">inglese</option></select>
+        <div class="titolo-e-back">
+            <a href="./index.html" id="bottone-back"><img src="./left-arrow.png" alt="back-arrow" width="70px"></a>
+            <h2 class="titolo-impostazioni" data-en="Options" data-it="Impostazioni">Impostazioni</h2>
+            <button id="bottone-musica" onclick="onToggleMusic()"><img src="./speaker.png" alt="music-button" width="60px" height="60px"></button>
+        </div>
+        <div class="contenitore-lingua">
+            <select class="bottoni-menu" id="input-lingua" name="lingua"><option value="" disabled selected data-en="Choose the language" data-it="Scegli la lingua">Scegli la lingua</option><option value="it">italiano</option><option value="en">english</option></select>
         </div>
         <div>
-            <h2><button>Come si gioca</button></h2>
-            <a href="https://it.wikipedia.org/wiki/Tris_(gioco)#:~:text=Vince%20il%20giocatore%20che%20riesce,il%20gioco%20finisce%20in%20parit%C3%A0.">Link</a>
+            <a href="https://portalebambini.it/gioco-del-tris/#:~:text=Si%20gioca%20su%20una%20griglia,o%20lungo%20una%20delle%20diagonali."><button class="bottoni-menu" id="come" data-it="Come si gioca" data-en="How to play" >Come si gioca</button></a>
         </div>
         <div>
-            <h2><button>Ringraziamenti<button></h2>
-            <a href="">Link 2</a>
+            <button onclick="showNames()" class="bottoni-menu" id="ringraziamenti" data-en="Thanks" data-it="Ringraziamenti">Ringraziamenti</button>
+            <section id="contenitore-nomi"><span class="nomi"> <a href="https://it.wikipedia.org/wiki/Elisabetta_II_del_Regno_Unito"> Alex Bastianini</a></span><span class="nomi"><a href="https://it.wikipedia.org/wiki/Ovis_aries">Rachele Ravaioli</a></span><span class="nomi"><a style="color: inherit; text-decoration: none" href="https://it.wikipedia.org/wiki/Ovis_aries">Tommaso Patanè</a></span><span class="nomi"><a href="https://it.wikipedia.org/wiki/Ovis_aries">Margherita Ricci</a></span><span class="nomi"><a href="https://it.wikipedia.org/wiki/Albert_Einstein">Simone Capacci</a></span></section>
         </div>
     </body>
 </html>

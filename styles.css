@@ -7,8 +7,14 @@
   --colore-sfondo-tabella-hover: #0a9396;
   --colore-giocatore-uno: #001219;
   --colore-giocatore-due: #9b2226;
+  --colore-bottoni: #ca6702;
+  --colore-bordo-bottoni: #bb3e03;
   font-family: "Quicksand", sans-serif;
   font-size: 32px;
+}
+
+* {
+  cursor: pointer;
 }
 
 body {
@@ -16,15 +22,26 @@ body {
   text-align: center;
   padding: 0;
   margin: 0;
+  overflow-x: hidden;
 }
 
-/* PAGINA TRIS */
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+}
+
+select:focus,
+input:focus {
+  outline: none;
+}
+
+/* PAGINA DI GIOCO */
 
 .titolo {
   color: var(--colore-giocatore-uno);
   animation-name: tris;
   animation-duration: 8s;
   animation-iteration-count: infinite;
+  font-size: 3rem;
 }
 
 @keyframes tris {
@@ -32,7 +49,7 @@ body {
     color: var(--colore-giocatore-uno);
   }
   50% {
-    color: var(--colore-sfondo-tabella);
+    color: var(--colore-bordo-tabella);
   }
   100% {
     color: var(--colore-giocatore-uno);
@@ -40,6 +57,7 @@ body {
 }
 
 #titolo-tris {
+  color: var(--colore-giocatore-uno);
   text-align: center;
   font-size: 3rem;
 }
@@ -49,16 +67,35 @@ body {
   display: inline-block;
 }
 
-#titolo-tris .lettera:hover {
-  animation: salta 500ms;
+#titolo-tris .lettera {
+  animation: salta 20s infinite;
+}
+
+#titolo-tris .lettera:nth-child(1) {
+  animation-delay: 200ms;
+}
+
+#titolo-tris .lettera:nth-child(2) {
+  animation-delay: 400ms;
+}
+
+#titolo-tris .lettera:nth-child(3) {
+  animation-delay: 600ms;
+}
+
+#titolo-tris .lettera:nth-child(4) {
+  animation-delay: 800ms;
 }
 
 @keyframes salta {
   0% {
     transform: translateY(0);
   }
-  50% {
+  2.5% {
     transform: translateY(-0.5em);
+  }
+  5% {
+    transform: translateY(0);
   }
   100% {
     transform: translateY(0);
@@ -66,7 +103,7 @@ body {
 }
 
 #turn {
-  margin-top: 2rem;
+  margin-top: 4rem;
   font-weight: 500;
 }
 
@@ -92,36 +129,6 @@ body {
   transition: background-color 200ms;
 }
 
-.boxes:hover {
-  background-color: var(--colore-sfondo-tabella-hover);
-}
-
-.vinto,
-.vinto:hover {
-  background-color: rgb(87, 4, 4);
-  animation: lampeggia 1s infinite;
-}
-
-@keyframes lampeggia {
-  0% {
-    background-color: rgb(87, 4, 4);
-  }
-  50% {
-    background-color: red;
-  }
-  100% {
-    background-color: rgb(87, 4, 4);
-  }
-}
-
-table .uno {
-  color: var(--colore-giocatore-uno);
-}
-
-table .due {
-  color: var(--colore-giocatore-due);
-}
-
 #box1 {
   border-radius: 10px 0 0 0;
 }
@@ -140,6 +147,27 @@ table {
   border-spacing: 0;
   background-color: var(--colore-bordo-tabella);
   border-radius: 10px;
+}
+
+.boxes:hover {
+  background-color: var(--colore-sfondo-tabella-hover);
+}
+
+.vinto {
+  animation: lampeggia 1s 3;
+}
+
+.vinto:hover {
+  background-color: var(--colore-sfondo-tabella);
+}
+
+@keyframes lampeggia {
+  50% {
+    filter: brightness(1.1);
+  }
+  100% {
+    filter: brightness(1);
+  }
 }
 
 .bottoni-reset {
@@ -162,6 +190,49 @@ table {
   border: 2px solid #ca6702;
   border-radius: 50%;
   transition: filter 200ms;
+}
+
+#bottone-musica,
+#bottone-back {
+  position: relative;
+  background-color: transparent;
+  border: none;
+  transition: transform 300ms;
+}
+
+#bottone-musica:hover,
+#bottone-back:hover {
+  transform: scale(1.2);
+}
+
+#bottone-musica::after {
+  content: "X";
+  position: absolute;
+  display: grid;
+  place-items: center;
+  left: 40px;
+  top: 3px;
+  width: 30px;
+  height: 55px;
+  font-size: 42px;
+  font-weight: 800;
+  font-family: "Quicksand", sans-serif;
+  background-color: var(--colore-sfondo);
+}
+
+#bottone-musica.playing::after {
+  content: "Y";
+  position: absolute;
+  display: none;
+  place-items: center;
+  left: 40px;
+  top: 3px;
+  width: 30px;
+  height: 55px;
+  font-size: 42px;
+  font-weight: 800;
+  font-family: "Quicksand", sans-serif;
+  background-color: var(--colore-sfondo);
 }
 
 #reset {
@@ -214,114 +285,234 @@ table {
 
 /* MENU INIZIALE */
 
+.contenitore-bottoni-menu {
+  margin-top: 20vh;
+}
+
 .bottoni-menu {
   width: 40%;
-  background-color: lightcyan;
+  max-width: 400px;
+  background-color: var(--colore-bottoni);
   padding: 10px;
   border-radius: 15px;
   font-size: 32px;
-  margin-top: 10px;
+  margin-top: 30px;
   transition: filter 200ms;
   font-family: "Playfair Display";
+  color: var(--colore-giocatore-uno);
+  border: solid 4px var(--colore-bordo-bottoni);
+  font-weight: 600;
+  box-shadow: 5px 5px;
 }
+
 .bottoni-menu:hover {
-  filter: brightness(70%);
+  filter: brightness(0.8);
+}
+
+.contenitore-bottoni-menu .bottoni-menu {
+  width: 100%;
+  margin-top: 0;
+  box-shadow: none;
+}
+
+.div-bottoni-menu {
+  width: 40%;
+  max-width: 400px;
+  margin: 0 auto;
+  border-radius: 15px;
+  height: fit-content;
+  margin-top: 30px;
+  box-shadow: 3px 3px #202020;
+  animation: dimi 400ms forwards;
+}
+
+@keyframes dimi {
+  0% {
+    transform: scale(1.05);
+    box-shadow: 4px 6px #202020;
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 3px 3px #202020;
+  }
+}
+
+.contenitore-bottoni-menu div:hover {
+  animation: ingra 400ms forwards;
+}
+
+@keyframes ingra {
+  0% {
+    transform: scale(1);
+    box-shadow: 3px 3px #202020;
+  }
+  100% {
+    transform: scale(1.05);
+    box-shadow: 4px 6px #202020;
+  }
 }
 
 /* PAGINA ARMADIETTO */
+.button-forma {
+  background-color: var(--colore-bottoni);
+  border: solid 2px var(--colore-bordo-bottoni);
+  border-radius: 95px;
+  margin-left: 20px;
+  padding: 4px;
+  box-shadow: 2px 2px;
+}
+#input-colore-uno,
+#input-colore-due {
+  height: 35px;
+  width: 35px;
+}
+
+@keyframes sposta {
+  0% {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+  25% {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+  75% {
+    transform: translateX(80%);
+    opacity: 0;
+  }
+  80% {
+    transform: translateX(0px);
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+#titolo-armadietto {
+  animation: sposta 10s infinite;
+}
 
 .contenitore-armadietto {
   display: flex;
   justify-content: center;
   width: 100%;
 }
+
 .cont-armadietto-des {
   padding-left: 30px;
-  height: 100vh;
+  border-left: 2px solid black;
+  height: 80vh;
+  color: var(--colore-giocatore-due);
 }
 
 .cont-armadietto-sin {
   padding-right: 30px;
-  border-right: 2px solid;
-  height: 100vh;
-}
-#colore-rosso {
-  background-color: red;
-  width: 50px;
-  height: 50px;
+  border-right: 2px solid black;
+  height: 80vh;
+  color: var(--colore-giocatore-uno);
 }
 
-#colore-arancione {
-  background-color: orange;
-  width: 50px;
-  height: 50px;
-}
-#colore-giallo {
-  background-color: yellow;
-  width: 50px;
-  height: 50px;
+.contenitore-armadietto .label-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  color: black;
 }
 
-#colore-viola {
-  background-color: purple;
-  width: 50px;
-  height: 50px;
-}
-
-#colore-blu {
-  background-color: blue;
-  width: 50px;
-  height: 50px;
-}
-
-colore-verde {
-  background-color: green;
-  width: 50px;
-  height: 50px;
+#input-forma-uno,
+#input-forma-due {
+  text-align-last: center;
+  font-size: 20px;
+  font-weight: 500;
 }
 
 /* PAGINA SCELTA GIOCO */
 
-#vs {
-  width: 20%;
-  background-color: lightcyan;
-  padding: 10px;
-  border-radius: 15px;
-  font-size: 25px;
-  transition: filter 200ms;
-  font-family: "Playfair Display";
-  margin-top: 50px;
+.titolo-e-back {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 80px;
+  place-items: center;
 }
 
+#vs,
 #pc {
+  margin-left: 10px;
   width: 20%;
-  background-color: lightcyan;
-  padding: 10px;
-  border-radius: 15px;
-  font-size: 25px;
-  transition: filter 200ms;
-  font-family: "Playfair Display";
-  margin-top: 50px;
+}
+.wrapper-bottoni-gioco,
+.wrapper-bottoni-difficolta {
+  margin-top: 30vh;
 }
 
-#ringraziamenti {
-  width: 60%;
-  background-color: lightcyan;
-  padding: 10px;
-  border-radius: 15px;
-  font-size: 25px;
-  transition: filter 200ms;
-  font-family: "Playfair Display";
-  margin-top: 50px;
+/* PAGINA IMPOSTAZIONI */
+
+#contenitore-nomi {
+  margin-top: 2rem;
 }
 
-#come {
-  width: 60%;
-  background-color: lightcyan;
-  padding: 10px;
-  border-radius: 15px;
-  font-size: 25px;
+#contenitore-nomi a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.nomi {
+  display: inline-block;
+  padding: 1em 1.5em;
+  transition: color 400ms, transform 400ms;
+}
+
+.nomi:hover {
+  transform: scale(1.8);
+}
+
+.nomi:nth-child(1):hover {
+  color: red;
+}
+.nomi:nth-child(2):hover {
+  color: rgb(31, 179, 38);
+}
+.nomi:nth-child(3):hover {
+  color: rgb(209, 196, 15);
+}
+.nomi:nth-child(4):hover {
+  color: rgb(226, 16, 208);
+}
+.nomi:nth-child(5):hover {
+  color: rgb(235, 91, 8);
+}
+
+@keyframes ringrandisciNomi {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.8);
+  }
+}
+
+.titolo-impostazioni {
+  font-size: 3rem;
+}
+
+.contenitore-lingua {
+  margin-top: 20vh;
+}
+
+.contenitore-lingua select {
+  text-align-last: center;
+}
+
+.contenitore-lingua option {
   transition: filter 200ms;
-  font-family: "Playfair Display";
-  margin-top: 50px;
+  border: 2px solid black;
+}
+
+.contenitore-lingua option:hover {
+  filter: brightness(0.8);
+  background-color: var(--colore-bottoni);
 }

@@ -4,23 +4,27 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./tabella-tris.svg" />
     <link rel="stylesheet" href="styles.css">
     <script src="./script.js"></script>
     <title>Tris</title>
 </head>
 <body>
     <div class="titolo-e-back">
-        <h3 class="bottone-back"><a href="./index.html">BACK</a></h3>
-    <h1 class="titolo">TRIS</h1>
+        <a href="./index.html" id="bottone-back"><img src="./left-arrow.png" alt="back-arrow" width="70px"></a>
+        <h1 class="titolo">TRIS</h1>
+        <button id="bottone-musica" onclick="onToggleMusic()"><img src="./speaker.png" alt="music-button" width="60px" height="60px"></button>
     </div>
     <div class="wrapper-bottoni-gioco" id="wrapper-bottoni-gioco">
-        <button class="bottoni-gioco" id="vs" value="" onclick="onDiffChoice(this)">1 vs 1</button>
-        <button class="bottoni-gioco" id="pc" onclick="onPcClick()">PC</button>
+        <button class="bottoni-menu" id="vs" value="" onclick="onDiffChoice(this)">1 vs 1</button>
+        <button class="bottoni-menu" id="pc" onclick="onPcClick()">PC</button>
     </div>
-    <div class="wrapper-bottoni-difficolta" id="wrapper-bottoni-difficolta" style="visibility: hidden">
-        <button class="bottoni-difficolta" value="easy" onclick="onDiffChoice(this)">Facile</button>
-        <button class="bottoni-difficolta" value="normal" onclick="onDiffChoice(this)">Normale</button>
-        <button class="bottoni-difficolta" value="hard" onclick="onDiffChoice(this)">Difficile</button>
+    <div class="wrapper-bottoni-difficolta" id="wrapper-bottoni-difficolta" style="display: none;">
+        <button class="bottoni-menu" value="easy" onclick="onDiffChoice(this)" data-en="Easy" data-it="Facile">Facile</button>
+        <button class="bottoni-menu" value="normal" onclick="onDiffChoice(this)"
+  data-en="Normal" data-it="Normale">Normale</button>
+        <button class="bottoni-menu" value="hard" onclick="onDiffChoice(this)"
+  data-en="Hard" data-it="Difficile" >Difficile</button>
     </div>
 </body>
 </html>

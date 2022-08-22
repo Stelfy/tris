@@ -5,8 +5,11 @@ let ai = false;  // indica se l'ai e' attivo o se si e' in 1vs1
 let turnCount = 1;  // conteggio dei turni
 let puntiX = 0;  // punti dei giocatori x e o
 let puntiO = 0;
-let coloreUno = '001219';  //colori dei giocatori uno e due
-let coloreDue = '9b2226';
+let coloreUno = '#001219';  // colori dei giocatori uno e due
+let coloreDue = '#9b2226';
+let lang = "it"  // lingua del sito
+let formaUno = "O";  // forme di gioco dei giocatori uno e due
+let formaDue = "X";
 
 // tutte le combinazioni vincenti
 const winningPatterns = [
@@ -22,6 +25,10 @@ const winningPatterns = [
 
 window.onload = function() {
     loadVars();
+    loadEventListeners();
+    updateLang();
+    updateColor();
+    updateForma();
 };
 
 function loadVars() {
@@ -31,13 +38,72 @@ function loadVars() {
         coloreUno = localStorage.getItem('coloreUno');
     if (localStorage.getItem('coloreDue'))
         coloreDue = localStorage.getItem('coloreDue');
+    if (localStorage.getItem('formaUno'))
+        formaUno = localStorage.getItem('formaUno');
+    if (localStorage.getItem('formaDue'))
+        formaDue = localStorage.getItem('formaDue');
+    if (localStorage.getItem('lang'))
+        lang = localStorage.getItem('lang');
+}
+
+function loadEventListeners() {
+    if (document.getElementById('input-colore-uno')) document.getElementById('input-colore-uno').addEventListener('change', onColorChange, false);
+    if (document.getElementById('input-colore-due')) document.getElementById('input-colore-due').addEventListener('change', onColorChange, false);
+    if (document.getElementById('input-forma-uno')) document.getElementById('input-forma-uno').addEventListener('change', onFormaChange, false);
+    if (document.getElementById('input-forma-due')) document.getElementById('input-forma-due').addEventListener('change', onFormaChange, false);
+    if (document.getElementById('input-lingua')) document.getElementById('input-lingua').addEventListener('change', changeLang, false);
+}
+
+function updateLang() {
+    const elements = document.getElementsByTagName('*');
+    for (obj of elements){
+        if (obj.dataset[lang]){
+            obj.textContent = obj.dataset[lang];
+        }
+    }
+}
+
+function updateForma() {
+    const formaInputs = document.querySelectorAll(".contenitore-armadietto select");
+    if (!formaInputs) return;
+    for (obj of formaInputs){
+        if (obj.id == 'input-forma-uno'){
+            obj.value = formaUno;
+        } else if (obj.id == 'input-forma-due'){
+            obj.value = formaDue;
+        }
+    }
+    const turno = document.getElementById("turn");
+    if (turno) turno.textContent = "Turno: " + formaUno;
+}
+
+function updateColor() {
+    const colorInputs = document.querySelectorAll("input[type='color']");
+    if (!colorInputs) return;
+    for (obj of colorInputs){
+        if (obj.id == 'input-colore-uno'){
+            obj.value = coloreUno;
+            document.getElementById('armadietto-titolo-uno').style.color = coloreUno;
+        } else if (obj.id == 'input-colore-due'){
+            obj.value = coloreDue;
+            document.getElementById('armadietto-titolo-due').style.color = coloreDue;
+        }
+    }
+    const labelPunti1 = document.getElementById('g1');
+    const labelPunti2 = document.getElementById('g2');
+    if (labelPunti1) labelPunti1.style.color = coloreUno;
+    if (labelPunti2) labelPunti2.style.color = coloreDue;
 }
 
 // controllo se il gioco e' vinto
-function isWon(gameGrid) {
+function isWon(gameGrid, isReal) {
     for (let i = 0; i < winningPatterns.length; i++){
         const arr = winningPatterns[i];
         if (gameGrid[arr[0]] != 0 && gameGrid[arr[0]] == gameGrid[arr[1]] && gameGrid[arr[1]] == gameGrid [arr[2]]){
+            if (isReal){
+                for (let j = 0; j < 3; j++)
+                    document.getElementById('box'+(arr[j]+1)).classList.add('vinto');
+            }
             return true;
         } 
     }
@@ -68,19 +134,19 @@ function onSelect(obj) {
     if (grid[num-1] != 0 || finished) return;
 
     if (turn === 1) {
-        obj.style.color = `#${coloreUno}`;
-        obj.innerHTML = "O";
-        turnDiv.innerHTML = "Turno: X"; 
+        obj.style.color = `${coloreUno}`;
+        obj.innerHTML = formaUno;
+        turnDiv.innerHTML = "Turno: " + formaDue; 
     }
     else {
-        obj.style.color = `#${coloreDue}`;
-        obj.innerHTML = "X";
-        turnDiv.innerHTML = "Turno: O";
+        obj.style.color = `${coloreDue}`;
+        obj.innerHTML = formaDue;
+        turnDiv.innerHTML = "Turno: " + formaUno;
     }
 
-    grid[num-1] = obj.innerHTML;
+    grid[num-1] = (turn == 1) ? "O" : "X";
 
-    if (isWon(grid)) {
+    if (isWon(grid, true)) {
         // mostra vincitore, termina partita e aggiorna i punti
         turnDiv.innerHTML = "Vincitore: " + obj.innerHTML;
         onWin();
@@ -103,8 +169,8 @@ function playAI() {
     if (turnCount === 1){
         // place in center
         const box = document.getElementById("box5");
-        box.innerHTML = "X";
-        box.style.color = `#${coloreDue}`
+        box.innerHTML = formaDue;
+        box.style.color = `${coloreDue}`
         grid[4] = "X";
     }
     else {
@@ -122,12 +188,12 @@ function playAI() {
         console.timeEnd('AI execution time')
 
         const box = document.getElementById("box"+(bestMove+1));
-        box.innerHTML = "X";
-        box.style.color = `#${coloreDue}`
+        box.innerHTML = formaDue;
+        box.style.color = `${coloreDue}`
         grid[bestMove] = "X";
     }
 
-    if (isWon(grid)) {
+    if (isWon(grid, true)) {
         // show winner and stop game
         turnDiv.innerHTML = "Vincitore: Computer";
         onWin();
@@ -139,7 +205,7 @@ function playAI() {
     }
     else {
         // continue playing
-        turnDiv.innerHTML = "Turno: O";
+        turnDiv.innerHTML = "Turno: " + formaUno;
     }
     turn = 1;
     turnCount++;
@@ -286,17 +352,17 @@ function update() {
     const turnDiv = document.getElementById("turn");
 
     if (turn === 1) {
-        turnDiv.innerHTML = "Turno: O"; 
+        turnDiv.innerHTML = "Turno: " + formaUno; 
     }
     else {
-        turnDiv.innerHTML = "Turno: X";
+        turnDiv.innerHTML = "Turno: " + formaDue;
     }
 
     for (let i = 0; i < 9; i++){
         const box = document.getElementById("box"+(i+1));
         if (grid[i] == 0) box.innerHTML = "";
-        else if (grid[i] == "O") box.innerHTML = "O";
-        else box.innerHTML = "X";
+        else if (grid[i] == "O") box.innerHTML = formaUno;
+        else if (grid[i] == "X") box.innerHTML = formaDue;
         box.classList.remove('vinto');
     }
 
@@ -304,23 +370,12 @@ function update() {
     document.getElementById('punti2').innerHTML = puntiX;
 }
 
-// per cambiare la modalita di gioco da 1vs1 a pc e viceversa
-function onModeChange1v1(obj) {
-    if (!ai) return;
-    ai = false;
-}
-function onModeChangeAI(obj) {
-    if (ai) return;
-    ai = true;
-    if (turn == 2) playAI();
-}
-
 
 // PAGINA GIOCO
 
 function onPcClick() {
-    document.getElementById('wrapper-bottoni-gioco').style.visibility = "hidden";
-    document.getElementById('wrapper-bottoni-difficolta').style.visibility = "visible";
+    document.getElementById('wrapper-bottoni-gioco').style.display = "none";
+    document.getElementById('wrapper-bottoni-difficolta').style.display = "block";
 }
 
 function onDiffChoice(obj) {
@@ -328,3 +383,65 @@ function onDiffChoice(obj) {
     window.location.href = "./tris.html";
 }
 
+
+// PAGINA ARMADIETTO
+
+function onFormaChange(event) {
+    const forma = event.target.value;
+    if (event.target.id === 'input-forma-uno'){
+        localStorage.setItem('formaUno', forma);
+        formaUno = forma;
+    } else if (event.target.id === 'input-forma-due'){
+        localStorage.setItem('formaDue', forma);
+        formaDue = forma;
+    }
+}
+
+function onColorChange(event) {
+    const color = event.target.value;
+    if (event.target.id === 'input-colore-uno'){
+        document.getElementById('armadietto-titolo-uno').style.color = `${color}`;
+        localStorage.setItem('coloreUno', color);
+        coloreUno = color;
+    } else if (event.target.id === 'input-colore-due'){
+        document.getElementById('armadietto-titolo-due').style.color = `${color}`;
+        localStorage.setItem('coloreDue', color);
+        coloreDue = color;
+    }
+}
+
+
+// PAGINA IMPOSTAZIONI
+
+function changeLang(event) {
+    const language = event.target.value;
+    localStorage.setItem('lang', language);
+    const elements = document.getElementsByTagName('*');
+    for (obj of elements){
+        if (obj.dataset[language]){
+            obj.textContent = obj.dataset[language];
+        }
+    }
+}
+
+function showNames() {
+    const names = document.getElementById('contenitore-nomi');
+    if (names.style.visibility === 'hidden') names.style.visibility = 'visible';
+    else names.style.visibility = 'hidden';
+}
+
+
+// MUSICA
+
+const audio = new Audio('./canzone-tris.mp3');
+audio.volume = 0.5;
+function onToggleMusic() {
+    const audioButton = document.getElementById('bottone-musica');
+    if (audio.paused){
+        audioButton.classList.add('playing')
+        audio.play();
+    } else {
+        audioButton.classList.remove('playing')
+        audio.pause();
+    }    
+}
